@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const PORT = process.env.PORT
+var dogID = 1
 
 var mockDatabase = []
 
@@ -22,10 +23,12 @@ app.get('/doginventory', function (req, res) {
 })
 
 app.post("/adddog", function (req, res) {
-    var input1 = req.body
+    console.log(req.body)
     var resposeToUser = req.body
     resposeToUser.adopted = false
- 
+    resposeToUser.id = parseInt(dogID)
+    dogID = dogID + 1   
+    console.log(resposeToUser)
     mockDatabase.push(resposeToUser)
     res.status(200).json(resposeToUser)
 })
@@ -35,8 +38,16 @@ app.put("/adddog", function (req, res) {
     res.status(200).send("good job buddy")
 })
 
-app.delete("/adddog", function (req, res) {
-    console.log("hit the DELETE route")
+app.delete("/removedog/:banana", function (req, res) {
+   console.log(req.params.banana)
+   var dogId = parseInt(req.params.banana)
+    console.log(dogId)
+    for (let i = 0; i < mockDatabase.length; i++) {
+        if(mockDatabase[i].id == dogId ){
+            delete mockDatabase[i];
+        }
+      }
+ 
     res.status(200).send("good job buddy")
 })
 
